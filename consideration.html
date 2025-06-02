@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gelista Flavour Grid (Side-by-Side)</title>
+  <style>
+    body {
+      font-family: 'Times New Roman', serif;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      font-size: 36px;
+    }
+    .tables-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    table {
+      width: 48%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 6px;
+      height: 30px;
+      font-size: 12px;
+    }
+    th {
+      background-color: #eae3ee;
+    }
+    .filled {
+      background-color: #C6A5C8;
+      cursor: pointer;
+    }
+    .filled.selected {
+      background-color: #A267AC;
+    }
+    .empty {
+      background-color: #F3EDF4;
+    }
+    #confirm {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #A267AC;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #confirm:hover {
+      background-color: #7e4f8c;
+    }
+    .section {
+      margin-bottom: 60px;
+    }
+    .analysis-content {
+      border: 1px dashed #aaa;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 16px;
+      background-color: #f8f5f9;
+    }
+	.tank {
+	  width: 60px;
+	  height: 150px;
+	  background-color: #b0c4de;
+	  border: 2px solid #333;
+	  border-radius: 8px;
+	}
+
+	.bucket {
+	  width: 40px;
+	  height: 80px;
+	  background-color: #deb887;
+	  border: 2px solid #333;
+	  border-radius: 6px;
+	}
+  </style>
+</head>
+<body>
+
+<!-- 🔼 Top half：Consideration Mapping -->
+<div class="section">
+  <h2>Consideration Mapping</h2>
+  <div class="tables-container">
+    <table id="flavourGrid1">
+      <thead>
+        <tr><th>Flavour</th><th>100ML</th><th>10L</th><th>150ML</th><th>2L</th><th>570ML</th><th>5L</th><th>6L</th><th>80ML</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Banana</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Bean & Bikkie Ginger Bread</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Bees' Sneeze Honey Crunch</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Black Sesame</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Blood Orange Sorbet</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Blood Orange and Dark Chocolate</td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Choc Brownie</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td></tr>
+      <tr><td>Chocolate</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+      <tr><td>Chocolate Banana</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td></tr>
+      <tr><td>Chocolate Cherry Parfait</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Chocolate Coconut Rough</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td></tr>
+      <tr><td>Chocolate Hazelnut</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td></tr>
+      <tr><td>Chocolate Hazelnut </td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Chocolate Ice Cream</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Cinnamon</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Classic Chocolate</td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Classic Chocolate </td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Classic Strawberry</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td></tr>
+      <tr><td>Coconut  </td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Coconut Cream and Desert Lime</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Coconut with Raspberry Swirl</td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Coffee</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td></tr>
+      <tr><td>Coffee  </td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Coffee with White Chocolate Swirl</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Cookie Dough (French Vanilla with Choc Chip)</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Cookies and Creme</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Cookies and Cr猫me</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td></tr>
+      <tr><td>DF Chocolate</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>DF Coconut</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>DF Coconut with Raspberry Swirl</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>DF Durian</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>DF Salted Caramel with Crunchy Toffee Piece</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>DF Turkish Delight</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>DF Vanilla Bean</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Davidson Plum</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Death by Chocolate</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Durian</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>French Vanilla Bean</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Frozen Peach Yoghurt</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Frozen Yoghurt</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Glen Ewin Fig Leaf</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Green Apple Sorbet</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Hazelnut</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+      <tr><td>Hojicha (Roasted Green Tea)</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Illawarra Plum</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Irish Cream</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Josephine's French Vanilla</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Kakadu Plum</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Latte</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Lemon</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Lemon Myrtle & Macadamia with Toasted Coconut</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Lemon Sorbet</td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Lemon Sorbet & Desert Lime</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Lightly Salted Caramel Macadamia</td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Lilly Pilly & Wild Ginger</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Lime Sorbet</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Lime Spider</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+      <tr><td>Liquorice</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Lu'Mone Cheesecake</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      
+      </tbody>
+    </table>
+    <table id="flavourGrid2">
+      <thead>
+        <tr><th>Flavour</th><th>100ML</th><th>10L</th><th>150ML</th><th>2L</th><th>570ML</th><th>5L</th><th>6L</th><th>80ML</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Macadamia</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Macadamia and KI Honey</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Mallee Honey</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Mandarin Sorbet</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Mango Smoothies</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td></tr>
+      <tr><td>Mango Sorbet</td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+      <tr><td>Mango and Cream with Macadamia</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+      <tr><td>Mango with Passionfruit Swirl</td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Matcha (Green Tea)</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Mint & Dark Chocolate</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Mint and Dark Chocolate</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Muntries</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Native Mint</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Old English Toffee</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Orange and Lemon</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td></tr>
+	  <tr><td>Passionfruit Sorbet</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Peanut Butter Cookie Dough</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Peanut Butter Cookie Dough  </td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Peanut Butter with Chocolate and Caramel Swirl</td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Pistachio</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Quandong</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Rainbow</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Raspberry Sorbet</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Raspberry Swirl</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Raspberry lemonade</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td></tr>
+	  <tr><td>Ricotta, Fig and Honey</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Rosella</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Rum and Raisin</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Saltbush Caramel</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Salted Caramel and Macadamia</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Spiced Cookie Butter </td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Strawberries Delight</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Strawberry Delight</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Strawberry Gum Leaf</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Strawberry Sorbet</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Strawberry Sorbet </td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Strawberry with White Chocolate Swirl</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Thai Tea</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Turkish Delight</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Ube</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Vanilla Bean</td><td class="filled"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Vanilla Bean Ice Cream</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Vanilla Bean and Macadamia</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Vanilla Bean with White Chocolate and Nougat</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Vanilla Whip</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Watermelon Kiss</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Watermelon Lime</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td></tr>
+	  <tr><td>Wattleseed</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>White Chocolate</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>White Chocolate with Raspberry Ripple</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="filled"></td><td class="empty"></td></tr>
+	  <tr><td>Wild Hibiscus and Mixed Berry Sorbet</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+	  <tr><td>Yuzu Sorbet</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="filled"></td><td class="empty"></td><td class="empty"></td></tr>
+
+      </tbody>
+    </table>
+  </div>
+  <button id="confirm">✅ confirm</button>
+
+  <div class="section storage-simulation">
+    <h3 style="text-align: center;">Storage Simulation</h3>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 40px; margin-top: 40px;">
+      <!-- 第一排：6 个 1000kg 储罐 -->
+      <div style="display: flex; justify-content: center; gap: 20px;">
+        <div class="tank" title="1000 kg Tank"></div>
+        <div class="tank" title="1000 kg Tank"></div>
+        <div class="tank" title="1000 kg Tank"></div>
+        <div class="tank" title="1000 kg Tank"></div>
+        <div class="tank" title="1000 kg Tank"></div>
+        <div class="tank" title="1000 kg Tank"></div>
+      </div>
+
+      <!-- 第二排：4 个 220kg 桶 -->
+      <div style="display: flex; justify-content: center; gap: 20px;">
+        <div class="bucket" title="220 kg Bucket"></div>
+        <div class="bucket" title="220 kg Bucket"></div>
+        <div class="bucket" title="220 kg Bucket"></div>
+        <div class="bucket" title="220 kg Bucket"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可选的分析部分 -->
+  <div class="analysis-content">
+    Select any cell to analyze storage use or production constraints.
+  </div>
+
+
+<!-- 🔽 Lower half：Analysis -->
+<div class="section">
+  <h2>Analysis</h2>
+  <div class="analysis-content">
+    👉 Subsequent charts, trend analysis, sales comparison, and recommendation results will be displayed here.
+  </div>
+</div>
+
+
+
+<script>
+  // ✅ 1. 口味排序优先级定义（可以自行扩展）
+  const flavourInfo = {
+	"DF Chocolate": { allergens: [], color: 20 },
+	"DF Coconut": { allergens: [], color: 1 },
+	"DF Coconut with Raspberry Swirl": { allergens: [], color: 1 },
+	"DF Durian": { allergens: [], color: 10 },
+	"DF Salted Caramel with Crunchy Toffee Piece": { allergens: [], color: 9 },
+	"DF Turkish Delight": { allergens: [], color: 12 },
+	"DF Vanilla Bean": { allergens: [], color: 1 },
+	"Blood Orange Sorbet": { allergens: [], color: 13 },
+	"Green Apple Sorbet": { allergens: [], color: 17 },
+	"Lemon Sorbet": { allergens: [], color: 1 },
+	"Lemon Sorbet & Desert Lime": { allergens: [], color: 1 },
+	"Lime Sorbet": { allergens: [], color: 17 },
+	"Mandarin Sorbet": { allergens: [], color: 11 },
+	"Mango Sorbet": { allergens: [], color: 10 },
+	"Passionfruit Sorbet": { allergens: [], color: 10 },
+	"Raspberry Sorbet": { allergens: [], color: 14 },
+	"Strawberry Sorbet": { allergens: [], color: 12 },
+	"Wild Hibiscus and Mixed Berry Sorbet": { allergens: [], color: 23 },
+	"Yuzu Sorbet": { allergens: [], color: 1 },
+	"Strawberry Sorbet ": { allergens: [], color: 12 },
+	"Coconut with Raspberry Swirl": { allergens: [], color: 1 },
+	"Mango with Passionfruit Swirl": { allergens: [], color: 10 },
+	"Lemon": { allergens: [], color: 1 },
+	"Classic Strawberry": { allergens: [], color: 26 },
+	"Raspberry lemonade": { allergens: [], color: 26 },
+	"Watermelon Lime": { allergens: [], color: 26 },
+	"Orange and Lemon": { allergens: [], color: 26 },
+	"Coconut Cream and Desert Lime": { allergens: [], color: 26 },
+	"Davidson Plum": { allergens: [], color: 26 },
+	"Muntries": { allergens: [], color: 26 },
+	"Banana": { allergens: ["MILK"], color: 10 },
+	"Bean & Bikkie Ginger Bread": { allergens: ["MILK"], color: 9 },
+	"Black Sesame": { allergens: ["MILK", "SESAME"], color: 24 },
+	"Boysenberry Swirl": { allergens: ["MILK"], color: 1 },
+	"Bubble Gum": { allergens: ["MILK"], color: 21 },
+	"Blood Orange and Dark Chocolate": { allergens: ["MILK", "SOY"], color: 13 },
+	"Caramel Crunch Ripple": { allergens: ["MILK"], color: 9 },
+	"Chocolate": { allergens: ["MILK"], color: 20 },
+	"Chocolate Ice Cream": { allergens: ["MILK"], color: 20 },
+	"Chocolate Cherry Parfait": { allergens: ["SULPHITES", "MILK"], color: 20 },
+	"Chocolate Hazelnut ": { allergens: ["WHEAT", "HAZELNUT", "ALMOND", "MILK", "SOY"], color: 20 },
+	"Coconut  ": { allergens: ["MILK"], color: 1 },
+	"Coffee  ": { allergens: ["MILK"], color: 18 },
+	"Cinnamon": { allergens: ["MILK"], color: 8 },
+	"Cookie Dough (French Vanilla with Choc Chip)": { allergens: ["WHEAT", "EGG", "MILK", "SOY"], color: 10 },
+	"Cookies and Creme": { allergens: ["WHEAT", "MILK", "SOY"], color: 5 },
+	"Durian": { allergens: ["MILK"], color: 10 },
+	"French Vanilla Bean": { allergens: ["MILK"], color: 6 },
+	"Frozen Yoghurt": { allergens: ["MILK"], color: 1 },
+	"Frozen Peach Yoghurt": { allergens: ["MILK"], color: 7 },
+	"Glen Ewin Fig Leaf": { allergens: ["MILK"], color: 1 },
+	"Lime Spider": { allergens: ["MILK"], color: 3 },
+	"Latte": { allergens: ["MILK"], color: 1 },
+	"Lu'Mone Cheesecake": { allergens: ["WHEAT", "ALMOND", "MILK", "SOY"], color: 6 },
+	"Lemon Myrtle & Macadamia with Toasted Coconut": { allergens: ["MACADAMIA", "MILK"], color: 1 },
+	"Mango and Cream with Macadamia": { allergens: ["MACADAMIA", "MILK"], color: 2 },
+	"Hazelnut": { allergens: ["HAZELNUT", "MILK"], color: 20 },
+	"Hojicha (Roasted Green Tea)": { allergens: ["MILK"], color: 16 },
+	"Irish Cream ": { allergens: ["ALMOND", "MILK", "SOY"], color: 18 },
+	"Liquorice": { allergens: ["MILK"], color: 24 },
+	"Macadamia and KI Honey": { allergens: ["MACADAMIA", "MILK"], color: 8 },
+	"Matcha (Green Tea)": { allergens: ["MILK"], color: 19 },
+	"Mint & Dark Chocolate": { allergens: ["MILK", "SOY"], color: 17 },
+	"Old English Toffee": { allergens: ["MILK"], color: 15 },
+	"Peanut Butter Cookie Dough": { allergens: ["WHEAT", "PEANUT", "MILK", "SOY"], color: 18 },
+	"Pistachio": { allergens: ["PISTACHIO", "MILK"], color: 17 },
+	"Rainbow": { allergens: ["MILK"], color: 25 },
+	"Raspberry Swirl": { allergens: ["MILK"], color: 4 },
+	"Ricotta, Fig and Honey": { allergens: ["MILK"], color: 1 },
+	"Rum and Raisin": { allergens: ["MILK"], color: 10 },
+	"Salted Caramel and Macadamia": { allergens: ["MACADAMIA", "MILK"], color: 9 },
+	"Peanut Butter with Chocolate and Caramel Swirl": { allergens: ["HAZELNUT", "PEANUT", "MILK", "SOY"], color: 18 },
+	"Strawberries Delight": { allergens: ["MILK"], color: 12 },
+	"Thai Tea": { allergens: ["MILK"], color: 13 },
+	"Turkish Delight": { allergens: ["MILK"], color: 12 },
+	"Ube": { allergens: ["MILK"], color: 22 },
+	"Vanilla Bean": { allergens: ["MILK"], color: 1 },
+	"Vanilla Bean and Macadamia": { allergens: ["MACADAMIA", "MILK"], color: 1 },
+	"Vanilla Bean Ice Cream": { allergens: ["MILK"], color: 1 },
+	"Vanilla Bean with White Chocolate and Nougat": { allergens: ["WHEAT", "ALMOND", "MILK", "SOY"], color: 1 },
+	"Vanilla Whip": { allergens: ["MILK"], color: 1 },
+	"Watermelon Kiss": { allergens: ["MILK"], color: 12 },
+	"White Chocolate": { allergens: ["MILK", "SOY"], color: 1 },
+	"White Chocolate with Raspberry Ripple": { allergens: ["MILK", "SOY"], color: 1 },
+	"Chocolate Coconut Rough": { allergens: ["MILK", "SOY"], color: 20 },
+	"Choc Brownie": { allergens: ["WHEAT", "EGG", "MILK"], color: 20 },
+	"Coffee": { allergens: ["MILK"], color: 18 },
+	"Cookies and Crème": { allergens: ["WHEAT", "MILK", "SOY"], color: 5 },
+	"Peanut Butter Cookie Dough  ": { allergens: ["WHEAT", "PEANUT", "MILK", "SOY"], color: 18 },
+	"Chocolate Hazelnut": { allergens: ["WHEAT", "HAZELNUT", "ALMOND", "MILK", "SOY"], color: 20 },
+	"Spiced Cookie Butter ": { allergens: ["WHEAT", "MILK", "SOY"], color: 18 },
+	"Strawberry Delight": { allergens: ["MILK"], color: 12 },
+	"Classic Chocolate ": { allergens: ["MILK"], color: 20 },
+	"Classic Chocolate": { allergens: ["MILK"], color: 20 },
+	"Lightly Salted Caramel Macadamia": { allergens: ["MACADAMIA", "MILK"], color: 18 },
+	"Coffee with White Chocolate Swirl": { allergens: ["MILK", "SOY"], color: 18 },
+	"Mint and Dark Chocolate": { allergens: ["MILK", "SOY"], color: 17 },
+	"Strawberry with White Chocolate Swirl": { allergens: ["MILK", "SOY"], color: 12 },
+	"Mango Smoothies": { allergens: ["MILK"], color: 26 },
+	"Chocolate Banana": { allergens: ["MILK"], color: 26 },
+	"Illawarra Plum": { allergens: ["MILK"], color: 26 },
+	"Kakadu Plum": { allergens: ["MILK"], color: 26 },
+	"Lilly Pilly & Wild Ginger": { allergens: ["MILK"], color: 26 },
+	"Macadamia": { allergens: ["MACADAMIA", "MILK"], color: 26 },
+	"Mallee Honey": { allergens: ["MILK"], color: 26 },
+	"Native Mint": { allergens: ["MILK"], color: 26 },
+	"Quandong": { allergens: ["MILK"], color: 26 },
+	"Rosella": { allergens: ["MILK"], color: 26 },
+	"Saltbush Caramel": { allergens: ["MILK"], color: 26 },
+	"Strawberry Gum Leaf": { allergens: ["MILK"], color: 26 },
+	"Wattleseed": { allergens: ["MILK"], color: 26 },
+	"Josephine's French Vanilla": { allergens: ["MILK"], color: 26 },
+	"Bees' Sneeze Honey Crunch": { allergens: ["MILK"], color: 26 },
+	"Death by Chocolate": { allergens: ["MILK", "SOY"], color: 26 }
+ };
+
+  // ✅ 2. Click the mouse to switch the selected state of the grids.
+  document.querySelectorAll(".filled").forEach(cell => {
+    cell.addEventListener("click", () => {
+      cell.classList.toggle("selected");
+    });
+  });
+
+  // ✅ 3. After clicking the button, selecting and extracting the information and push it into next step
+  document.getElementById("confirm").addEventListener("click", () => {
+    const selected = [];
+    const rows = document.querySelectorAll(".tables-container table tbody tr"); // select flavour(lines)
+
+    rows.forEach(row => {
+      const flavour = row.children[0].textContent.trim();
+      for (let i = 1; i < row.children.length; i++) { // for each selected flavour travers each coloum
+        const cell = row.children[i];
+        if (cell.classList.contains("selected")) { // if the cell is selected extract this cell
+          const size = row.closest("table").querySelector(`thead th:nth-child(${i+1})`).textContent.trim();
+          selected.push({ flavour, size }); // push flavors selected into next step
+        }
+      }
+    });
+
+    // ✅ 图排序逻辑（图搜索 + allergen 子集判断 + color）
+	function isSubset(a, b) { // Judge if the flavour's allergen is the child of the former
+	  return a.every(val => b.includes(val)); 
+	}
+
+	function computeCost(fa, fb) {
+	  // 惩罚来源 1：过敏原不兼容
+	  const allergenPenalty = !isSubset(fa.allergens, fb.allergens) ? 100 : 0;
+	  // 惩罚来源 2：颜色变浅才惩罚（可以用差值）
+	  const colorPenalty = fb.color < fa.color ? (fa.color - fb.color) : 0;
+	  // 总惩罚
+	  const totalPenalty = allergenPenalty + colorPenalty;
+	  return totalPenalty;
+	}
+
+	function buildGraph(selected) { // Graph building(Weighted Directed Graph)
+	  const graph = {};
+	  selected.forEach(a => {
+		const fa = flavourInfo[a.flavour] || { allergens: [], color: 99 };
+		graph[a.flavour] = [];
+
+		selected.forEach(b => {
+		  if (a.flavour === b.flavour) return;
+		  const fb = flavourInfo[b.flavour] || { allergens: [], color: 99 };
+		  const cost = computeCost(fa, fb);
+		  graph[a.flavour].push({ to: b.flavour, cost });
+		});
+	  });
+	  return graph;
+	}
+
+	function greedyPath(graph, flavourInfo, selected) {
+	  const visited = new Set();
+	  const path = [];
+
+	  selected.sort((a, b) => {
+		const fa = flavourInfo[a.flavour] || { allergens: [], color: 99 };
+		const fb = flavourInfo[b.flavour] || { allergens: [], color: 99 };
+		return fa.allergens.length - fb.allergens.length || fa.color - fb.color;
+	  });
+
+	  let current = selected[0].flavour;
+
+	  while (current) {
+		visited.add(current);
+		path.push(current);
+
+		const next = (graph[current] || [])
+		  .filter(e => !visited.has(e.to))
+		  .sort((a, b) => a.cost - b.cost);
+
+		current = next.length > 0 ? next[0].to : null;
+	  }
+
+	  return path;
+	}
+
+	// ✅ 将生产路径渲染为 SVG 图（在 .analysis-content 中展示）
+	function renderSVGPath(sorted, flavourInfo) {
+	  const boxWidth = 160;
+	  const boxHeight = 40;
+	  const spacing = 60;
+	  const arrowSize = 10;
+	  const fontSize = 12;
+
+	  let svgHeight = 100;
+	  let svgWidth = sorted.length * (boxWidth + spacing);
+
+	  let svg = `<svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg" style="font-family: Arial;">`;
+
+	  for (let i = 0; i < sorted.length; i++) {
+		const x = i * (boxWidth + spacing);
+		const y = 30;
+		const flavour = sorted[i].flavour;
+
+		// Draw rectangle
+		svg += `<rect x="${x}" y="${y}" width="${boxWidth}" height="${boxHeight}" rx="10" ry="10" fill="#e0f7fa" stroke="#00796b" stroke-width="2"/>`;
+		svg += `<text x="${x + boxWidth / 2}" y="${y + boxHeight / 2 + 4}" font-size="${fontSize}" text-anchor="middle">${flavour}</text>`;
+
+		// Draw arrow and labels
+		if (i < sorted.length - 1) {
+		  const nextFlavour = sorted[i + 1].flavour;
+		  const from = flavourInfo[flavour] || { allergens: [], color: 99 };
+		  const to = flavourInfo[nextFlavour] || { allergens: [], color: 99 };
+		  const isClean = !from.allergens.every(a => to.allergens.includes(a));
+		  const colorShift = to.color > from.color ? "darker" : to.color < from.color ? "lighter" : "same";
+
+		  // Draw arrow line
+		  const ax = x + boxWidth;
+		  const ay = y + boxHeight / 2;
+		  const bx = ax + spacing - arrowSize;
+		  svg += `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${ay}" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>`;
+
+		  // Add cleaning & color text
+		  svg += `<text x="${(ax + bx) / 2}" y="${ay - 10}" font-size="${fontSize}" text-anchor="middle">${isClean ? "❌ clean" : "✅ no clean"}</text>`;
+		  svg += `<text x="${(ax + bx) / 2}" y="${ay + 20}" font-size="${fontSize}" text-anchor="middle">${colorShift}</text>`;
+		}
+	  }
+
+	  // Arrow marker
+	  svg += `
+		<defs>
+		  <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+			<path d="M0,0 L0,6 L9,3 z" fill="black"/>
+		  </marker>
+		</defs>
+	  `;
+
+	  svg += `</svg>`;
+	  return svg;
+	}
+	// ✅ 执行图排序并生成 SVG 输出
+	const graph = buildGraph(selected);
+	const path = greedyPath(graph, flavourInfo, selected);
+	const sorted = path.map(name => selected.find(f => f.flavour === name));
+
+	// ✅ 将 SVG 插入页面
+	const analysisDiv = document.querySelector('.analysis-content');
+	if (sorted.length === 0) {
+	  analysisDiv.innerHTML = `<em>⚠️ No flavour selected.</em>`;
+	} else {
+	  const svgContent = renderSVGPath(sorted, flavourInfo);
+	  analysisDiv.innerHTML = `<strong>🧭 Production Path (SVG View):</strong><br><br>${svgContent}`;
+	}
+  });
+</script>
+
+</body>
+</html>
