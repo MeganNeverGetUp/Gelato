@@ -447,23 +447,23 @@
       <tbody>
         <tr>
           <td>Type</td>
-          <td><select><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
-          <td><select><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
-          <td><select><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
-          <td><select><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
-          <td><select><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
-          <td><select><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
-          <td><select><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
+          <td><select class="delivery-type"><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
+          <td><select class="delivery-type"><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
+          <td><select class="delivery-type"><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
+          <td><select class="delivery-type"><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
+          <td><select class="delivery-type"><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
+          <td><select class="delivery-type"><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
+          <td><select class="delivery-type"><option value="tank">Tank</option><option value="bucket">Bucket</option></select></td>
         </tr>
         <tr>
           <td>Delivery Weight (kg)</td>
-          <td><input type="number" placeholder="e.g. 20"></td>
-          <td><input type="number" placeholder="e.g. 10"></td>
-          <td><input type="number" placeholder="e.g. 5"></td>
-          <td><input type="number" placeholder="e.g. 12"></td>
-          <td><input type="number" placeholder="e.g. 15"></td>
-          <td><input type="number" placeholder="e.g. 0"></td>
-          <td><input type="number" placeholder="e.g. 8"></td>
+          <td><input type="number" class="delivery-weight" placeholder="e.g. 20"></td>
+		  <td><input type="number" class="delivery-weight" placeholder="e.g. 20"></td>
+		  <td><input type="number" class="delivery-weight" placeholder="e.g. 20"></td>
+		  <td><input type="number" class="delivery-weight" placeholder="e.g. 20"></td>
+		  <td><input type="number" class="delivery-weight" placeholder="e.g. 20"></td>
+		  <td><input type="number" class="delivery-weight" placeholder="e.g. 20"></td>
+		  <td><input type="number" class="delivery-weight" placeholder="e.g. 20"></td>
         </tr>
       </tbody>
     </table>
@@ -955,6 +955,8 @@
     const tankCapacity = 1000, bucketCapacity = 220, numTanks = 6, numBuckets = 4;
     const totalCapacity = tankCapacity * numTanks + bucketCapacity * numBuckets;
     const dailyOutbound = [500, 800, 600, 1000, 700, 1200, 900];
+	const deliveryWeights = Array.from(document.querySelectorAll(".delivery-weight"))
+      .map(inp => parseFloat(inp.value) || 0);
 
     // 按 flavour 聚合 total amount
     let productionMap = {};
@@ -965,27 +967,43 @@
 
     let productionPlan = Object.entries(productionMap).map(([flavour, total]) => ({ flavour, remaining: total }));
 
-    let dayResults = [], storageLeft = tankWeight + bucketWeight;
-    for (let day = 1; day <= 7; day++) {
-      const producedToday = [];
-      let spaceAvailable = totalCapacity - storageLeft;
-      let outbound = dailyOutbound[day - 1];
-      for (let i = 0; i < productionPlan.length; i++) {
-        const item = productionPlan[i];
-        if (item.remaining === 0) continue;
-        const producible = Math.min(spaceAvailable, item.remaining);
-        if (producible > 0) {
-          producedToday.push({ flavour: item.flavour, amount: producible });
-          productionPlan[i].remaining -= producible;
-          storageLeft += producible;
-          storageLeft -= outbound;
-          storageLeft = Math.max(0, storageLeft);
-          spaceAvailable -= producible;
-          if (spaceAvailable <= 0) break;
-        }
-      }
-      dayResults.push({ day: `Day ${day}`, produced: producedToday, storage: storageLeft });
-    }
+    let dayResults = [];
+	const day0Storage = tankWeight + bucketWeight;  // ✅ Day 0 储存量
+
+	let storageLeft = 0;  // 初始设为 0，由 Day 1 的计算来更新
+
+	for (let day = 1; day <= 7; day++) {
+	  const producedToday = [];
+	  const outbound = deliveryWeights[day - 1];
+	  let spaceAvailable = totalCapacity - storageLeft;
+	  let dailyProductionTotal = 0;
+
+	  for (let i = 0; i < productionPlan.length; i++) {
+		const item = productionPlan[i];
+		if (item.remaining === 0) continue;
+
+		const producible = Math.min(spaceAvailable, item.remaining);
+		if (producible > 0) {
+		  producedToday.push({ flavour: item.flavour, amount: producible });
+		  item.remaining -= producible;
+		  dailyProductionTotal += producible;
+		  spaceAvailable -= producible;
+
+		  if (spaceAvailable <= 0) break;
+		}
+	  }
+
+  // ✅ 计算储存量
+  if (day === 1) {
+    // Day 1: 从 Day 0 状态推演
+    storageLeft = Math.max(0, totalCapacity - day0Storage - dailyProductionTotal + outbound);
+  } else {
+    // Day 2+: 从上日状态迭代
+    storageLeft = Math.max(0, storageLeft + dailyProductionTotal - outbound);
+  }
+
+  dayResults.push({ day: `Day ${day}`, produced: producedToday, storage: storageLeft });
+}
 
     // 存储到全局以便切换使用
     window.dayResults = dayResults;
@@ -1009,48 +1027,86 @@
     runProductionPath(selected);
   });
 
-  // ✅ 切换 Day 标签时显示对应天的 Tank/Bucket 状态
-  document.querySelectorAll(".day-label").forEach(label => {
-    label.addEventListener("click", () => {
-      const selectedDayIndex = parseInt(label.getAttribute("data-day"));
-      const dayResult = window.dayResults?.[selectedDayIndex];
-      if (!dayResult) return;
+  // ✅ 切换 Day 标签时显示对应天的 Tank/Bucket 状态（支持 Day 0 与 Day 1~7）
+	document.querySelectorAll(".day-label").forEach(label => {
+	  label.addEventListener("click", () => {
+		document.querySelectorAll(".day-label").forEach(d => d.classList.remove("selected"));
+		label.classList.add("selected");
+		const selectedDay = label.getAttribute("data-day");
 
-      const totalTank = 1000 * 6;
-      const totalBucket = 220 * 4;
+		document.querySelectorAll(".day-content").forEach(content => {
+		  content.style.display = content.getAttribute("data-day") === selectedDay ? "block" : "none";
+		});
 
-      let remainingTank = Math.min(dayResult.storage, totalTank);
-      let remainingBucket = Math.max(0, dayResult.storage - totalTank);
+		if (selectedDay === "0") {
+		  updateDay0Storage();
+		} else {
+		  const selectedDayIndex = parseInt(selectedDay);
+		  const dayResult = window.dayResults?.[selectedDayIndex];
+		  if (!dayResult) return;
 
-      const currentDayContent = document.querySelector(`.day-content[data-day="${selectedDayIndex}"]`);
-      const tanks = currentDayContent.querySelectorAll(".tank");
-      const buckets = currentDayContent.querySelectorAll(".bucket");
+		  const totalTank = 1000 * 6;
+		  const totalBucket = 220 * 4;
+		  let remainingTank = Math.min(dayResult.storage, totalTank);
+		  let remainingBucket = Math.max(0, dayResult.storage - totalTank);
 
-      tanks.forEach(t => {
-        t.classList.remove("filled");
-        const fill = Math.min(remainingTank, 1000);
-        if (fill > 0) {
-          t.classList.add("filled");
-          t.querySelector(".label").textContent = `${fill}kg`;
-        } else {
-          t.querySelector(".label").textContent = "0kg";
-        }
-        remainingTank -= fill;
-      });
+		  const currentDayContent = document.querySelector(`.day-content[data-day="${selectedDayIndex}"]`);
+		  const tanks = currentDayContent.querySelectorAll(".tank");
+		  const buckets = currentDayContent.querySelectorAll(".bucket");
 
-      buckets.forEach(b => {
-        b.classList.remove("filled");
-        const fill = Math.min(remainingBucket, 220);
-        if (fill > 0) {
-          b.classList.add("filled");
-          b.querySelector(".label").textContent = `${fill}kg`;
-        } else {
-          b.querySelector(".label").textContent = "0kg";
-        }
-        remainingBucket -= fill;
-      });
-    });
-  });
+		  tanks.forEach(t => {
+			t.classList.remove("filled");
+			const fill = Math.min(remainingTank, 1000);
+			if (fill > 0) {
+			  t.classList.add("filled");
+			  t.querySelector(".label").textContent = `${fill}kg`;
+			} else {
+			  t.querySelector(".label").textContent = "0kg";
+			}
+			remainingTank -= fill;
+		  });
+
+		  buckets.forEach(b => {
+			b.classList.remove("filled");
+			const fill = Math.min(remainingBucket, 220);
+			if (fill > 0) {
+			  b.classList.add("filled");
+			  b.querySelector(".label").textContent = `${fill}kg`;
+			} else {
+			  b.querySelector(".label").textContent = "0kg";
+			}
+			remainingBucket -= fill;
+		  });
+		}
+	  });
+	});
+	
+  function updateDay0Storage() {
+	const day0 = document.querySelector(`.day-content[data-day="0"]`);
+
+	const tankInput = day0.querySelector(".tankWeight");
+	const bucketInput = day0.querySelector(".bucketWeight");
+
+	const tankWeight = tankInput && tankInput.tagName === "INPUT" ? parseFloat(tankInput.value) || 0 : 0;
+	const bucketWeight = bucketInput && bucketInput.tagName === "INPUT" ? parseFloat(bucketInput.value) || 0 : 0;
+
+	let remainingTank = tankWeight;
+	let remainingBucket = bucketWeight;
+
+	day0.querySelectorAll(".tank").forEach(t => {
+	  const fill = Math.min(remainingTank, 1000);
+	  t.classList.toggle("filled", fill > 0);
+	  t.querySelector(".label").textContent = `${fill}kg`;
+	  remainingTank -= fill;
+	});
+
+	day0.querySelectorAll(".bucket").forEach(b => {
+	  const fill = Math.min(remainingBucket, 220);
+	  b.classList.toggle("filled", fill > 0);
+	  b.querySelector(".label").textContent = `${fill}kg`;
+	  remainingBucket -= fill;
+	});
+  }
 
 
   function runProductionPath(selected) {
@@ -1185,16 +1241,7 @@
     container.appendChild(ul);
   }
 
-  document.querySelectorAll(".day-label").forEach(day => {
-    day.addEventListener("click", () => {
-      document.querySelectorAll(".day-label").forEach(d => d.classList.remove("selected"));
-      day.classList.add("selected");
-      const selectedDay = day.getAttribute("data-day");
-      document.querySelectorAll(".day-content").forEach(content => {
-        content.style.display = content.getAttribute("data-day") === selectedDay ? "block" : "none";
-      });
-    });
-  });
+
 </script>
 
 </body>
