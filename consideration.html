@@ -6,13 +6,15 @@
   <style>
 /*1✅通用页面样式 */
 	body {
-	  font-family: 'Times New Roman', serif; //Set TNR 如果没有，用serif
-	  padding: 20px;                         //给整个页面内容加上 四周 20px 的内边距，避免内容紧贴边缘
+	  font-family: 'Times New Roman', serif;
+	  padding: 20px;
 	}
+
 	h2 {
-	  text-align: center; //居中
-	  font-size: 36px; 
+	  text-align: center;
+	  font-size: 36px;
 	}
+	
 /*2✅表格区 */
 	/* 横向表格容器，用于两个表格并排 */
 	.tables-container {
@@ -21,11 +23,13 @@
 	  flex-wrap: wrap;
 	  gap: 10px;
 	}
+	
 	.tables-container table {
 	  width: 48%; /* 只影响 tables-container 里的表格 */
 	  border-collapse: collapse;
 	  margin-top: 20px;
 	}
+
 	/* 表格通用样式 */
 	th, td {
 	  border: 1px solid #ccc;
@@ -34,15 +38,18 @@
 	  height: 30px;
 	  font-size: 12px;
 	}
+
 	th {
 	  background-color: #eae3ee;
 	}
+
 	/* 可填充格子样式 */
 	.filled {
 	  background-color: #C6A5C8;
 	  cursor: pointer;
 	  padding: 0;
 	}
+
 	.filled input {
 	  background-color: transparent;
 	  border: none;
@@ -53,9 +60,11 @@
 	  padding: 0;
 	  box-sizing: border-box;
 	}
+
 	.filled.selected { /*被选中变成深紫色*/
 	  background-color: #A267AC;
 	}
+
 	.empty { /*不可填的淡紫色*/
 	  background-color: #F3EDF4;
 	}
@@ -75,10 +84,12 @@
 	  background-color: #7e4f8c;
 	}
 /*4✅结构区块控制*/
-	.section { /*各大区域（如表格、分析、储存图等）之间有垂直间距*/
+	.section {
 	  margin-bottom: 60px;
 	}
-	.analysis-content { /* 分析区域（SVG等）,虚线边+居中文字*/
+
+	/* 分析区域 */
+	.analysis-content {
 	  border: 1px dashed #aaa;
 	  padding: 20px;
 	  margin-top: 20px;
@@ -93,7 +104,6 @@
 	  display: flex;
 	  justify-content: center;
 	}
-
 	.weekly-inner { /*保证表格宽度撑满容器*/
 	  width: 100%;
 	  max-width: 100%;
@@ -108,7 +118,6 @@
 	  width: 100%;
 	  border-collapse: collapse;
 	}
-
 	.weekly-table th, .weekly-table td {
 	  border: 1px solid #ccc;
 	  padding: 4px;
@@ -119,6 +128,7 @@
 	  padding: 2px 4px;
 	  font-size: 12px;
 	}
+	
 /*6✅Day 切换标签*/
     .production-days { /*显示在顶部的“Day 0 ~ Day 7”按钮*/
 	  display: flex;
@@ -139,19 +149,25 @@
 	  background-color: #A267AC;
 	  color: white;
 	}
+
 /*7✅生产区布局*/
   /*7.1 生产区整体布局*/
-	.production-view { /
+	.production-view {
 	  display: flex;
 	  justify-content: space-between;
 	  gap: 40px;
 	}
-	
-	.storage-status, .production-plan { /*左右各占一半，但预留 gap 避免挤满*/
+
+	.storage-status, .production-plan {
 	  width: 48%;
 	}
 	
-  /*7.2 储存系统 Tank / Bucket 可视化*/
+  /*7.2 右侧生产安排列表*/
+	.production-plan ul { /*为右侧的生产安排列表增加缩进，使排版整洁*/
+	  padding-left: 20px;
+	}
+	
+  /*7.3 储存系统 Tank / Bucket 可视化*/
 	.storage-simulation {
 	  display: flex;
 	  justify-content: space-between;
@@ -160,20 +176,20 @@
 	  gap: 40px;
 	}
 
-	.storage-block { /*每块存储区块（tank+bucket）*/
+	.storage-block {
 	  display: flex;
-	  flex-direction: column; /* 垂直排列 */
-	  align-items: center; /* 水平居中 */
+	  flex-direction: column;
+	  align-items: center;
 	}
 
-	.label-title { /*Tank/Bucket 标题*/
+	.label-title {
 	  font-size: 16px;
 	  font-weight: bold;
 	  margin-bottom: 10px;
 	  color: #333;
 	}
 
-	.tank-row, /*输入存储量行*/
+	.tank-row,
 	.bucket-row {
 	  display: flex;
 	  justify-content: center;
@@ -182,7 +198,7 @@
 	  margin-bottom: 20px;
 	}
 
-	.tank { /*模拟tank*/
+	.tank {
 	  width: 60px;
 	  height: 150px;
 	  background-color: #b0c4de;
@@ -206,32 +222,27 @@
 	  align-items: flex-end;
 	}
 
-	.tank, .bucket { /*共享样式，底部标签定位*/
+	.tank, .bucket {
 	  position: relative;
 	  display: flex;
 	  align-items: flex-end;
 	  justify-content: center;
 	}
 
-	.label { /*eg.200kg等*/
+	.label {
 	  position: absolute;
 	  bottom: 5px;
 	  font-size: 12px;
 	  color: white;
 	  font-weight: bold;
 	}
-    /*填充下改变颜色*/
+
 	.tank.filled {
 	  background-color: #4b0082; /* 深紫色 */
 	}
 
 	.bucket.filled {
 	  background-color: #8b4513; /* 深棕色 */
-	}
-		
-  /*7.3 右侧生产安排列表*/
-	.production-plan ul { /*为右侧的生产安排列表增加缩进，使排版整洁*/
-	  padding-left: 20px;
 	}
   </style>
 </head>
