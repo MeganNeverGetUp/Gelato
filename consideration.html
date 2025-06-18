@@ -807,7 +807,7 @@
 
 
 <script>
-  // ✅ 1. 口味排序优先级定义（可以自行扩展）
+// ✅ 1. 口味排序优先级定义（可以自行扩展）
   const flavourInfo = {
 	"DF Chocolate": { allergens: [], color: 20 },
 	"DF Coconut": { allergens: [], color: 1 },
@@ -925,114 +925,58 @@
 	"Death by Chocolate": { allergens: ["MILK", "SOY"], color: 26 }
  };
 
-  // ✅ 点击格子切换状态(选择口味和规格)
+// ✅ 2. 点击格子切换状态(选择口味和规格)
   document.querySelectorAll(".filled").forEach(cell => {
     cell.addEventListener("click", () => {
       cell.classList.toggle("selected");
     });
   });
 
-// ✅ 点击确认按钮执行所有逻辑
+// ✅ 3. 点击确认按钮执行所有逻辑
   document.getElementById("confirm").addEventListener("click", () => {
-    const selected = [];
-    const rows = document.querySelectorAll(".tables-container table tbody tr");
-    rows.forEach(row => {
-      const flavour = row.children[0].textContent.trim();
-      for (let i = 1; i < row.children.length; i++) {
-        const cell = row.children[i];
-        if (cell.classList.contains("selected")) {
-          const size = row.closest("table").querySelector(`thead th:nth-child(${i + 1})`).textContent.trim();
-          const input = cell.querySelector("input");
-          const amount = input ? parseFloat(input.value) || 0 : 0;
-          selected.push({ flavour, size, amount });
-        }
-      }
-    });
-
-    const selectedDay = document.querySelector(".day-label.selected").getAttribute("data-day");
-    const currentDayContent = document.querySelector(`.day-content[data-day="${selectedDay}"]`);
-    const tankWeight = parseFloat(currentDayContent.querySelector(".tankWeight").value) || 0;
-    const bucketWeight = parseFloat(currentDayContent.querySelector(".bucketWeight").value) || 0;
-    const tanks = currentDayContent.querySelectorAll(".tank");
-    const buckets = currentDayContent.querySelectorAll(".bucket");
-
-    const tankCapacity = 1000, bucketCapacity = 220, numTanks = 6, numBuckets = 4;
-    const totalCapacity = tankCapacity * numTanks + bucketCapacity * numBuckets;
-    const dailyOutbound = [500, 800, 600, 1000, 700, 1200, 900];
-	const deliveryWeights = Array.from(document.querySelectorAll(".delivery-weight"))
-      .map(inp => parseFloat(inp.value) || 0);
-
-    // 按 flavour 聚合 total amount
-    let productionMap = {};
-    selected.forEach(item => {
-      if (!productionMap[item.flavour]) productionMap[item.flavour] = 0;
-      productionMap[item.flavour] += item.amount;
-    });
-
-    let productionPlan = Object.entries(productionMap).map(([flavour, total]) => ({ flavour, remaining: total }));
-
-    let dayResults = [];
-	const day0Storage = tankWeight + bucketWeight;  // ✅ Day 0 储存量
-
-	let storageLeft = 0;  // 初始设为 0，由 Day 1 的计算来更新
-
-	for (let day = 1; day <= 7; day++) {
-	  const producedToday = [];
-	  const outbound = deliveryWeights[day - 1];
-	  let spaceAvailable = totalCapacity - storageLeft;
-	  let dailyProductionTotal = 0;
-
-	  for (let i = 0; i < productionPlan.length; i++) {
-		const item = productionPlan[i];
-		if (item.remaining === 0) continue;
-
-		const producible = Math.min(spaceAvailable, item.remaining);
-		if (producible > 0) {
-		  producedToday.push({ flavour: item.flavour, amount: producible });
-		  item.remaining -= producible;
-		  dailyProductionTotal += producible;
-		  spaceAvailable -= producible;
-
-		  if (spaceAvailable <= 0) break;
-		}
+	// a. 收集用户选择的所有口味+规格+输入量
+	const selected = [];
+	const rows = document.querySelectorAll(".tables-container table tbody tr");
+	rows.forEach(row => {
+	const flavour = row.children[0].textContent.trim();
+	for (let i = 1; i < row.children.length; i++) {
+	  const cell = row.children[i];
+	  if (cell.classList.contains("selected")) {
+		const size = row.closest("table").querySelector(`thead th:nth-child(${i + 1})`).textContent.trim();
+		const input = cell.querySelector("input");
+		const amount = input ? parseFloat(input.value) || 0 : 0;
+		selected.push({ flavour, size, amount });
 	  }
-    updateDay0Storage();
-  // ✅ 计算储存量
-  if (day === 1) {
-    // Day 1: 从 Day 0 状态推演
-    storageLeft = Math.max(0, totalCapacity - day0Storage - dailyProductionTotal + outbound);
-  } else {
-    // Day 2+: 从上日状态迭代
-    storageLeft = Math.max(0, storageLeft + dailyProductionTotal - outbound);
-  }
+	}
+	});
 
-  dayResults.push({ day: `Day ${day}`, produced: producedToday, storage: storageLeft });
-}
+	// b. Day 0 储存输入
+	const day0Content = document.querySelector(`.day-content[data-day="0"]`);
+	const tankWeight = parseFloat(day0Content.querySelector(".tankWeight").value) || 0;
+	const bucketWeight = parseFloat(day0Content.querySelector(".bucketWeight").value) || 0;
+	const day0Storage = tankWeight + bucketWeight;
 
-    // 存储到全局以便切换使用
-    window.dayResults = dayResults;
+	// c. 获取每天的出货量
+	const deliveryWeights = Array.from(document.querySelectorAll(".delivery-weight"))
+	.map(inp => parseFloat(inp.value) || 0);
 
-    // 渲染 Day 1 ~ Day 7 的生产计划
-    dayResults.forEach((dayResult, index) => {
-      const dayContainer = document.querySelector(`.day-content[data-day="${index + 1}"] .production-list`);
-      if (dayContainer) {
-        dayContainer.innerHTML = "";
-        dayResult.produced.forEach(p => {
-          const li = document.createElement("li");
-          li.textContent = `${p.flavour} – ${p.amount}kg`;
-          dayContainer.appendChild(li);
-        });
-        const liStorage = document.createElement("li");
-        liStorage.textContent = `Storage Left: ${dayResult.storage}kg`;
-        dayContainer.appendChild(liStorage);
-      }
-    });
+	// d. 总容量定义
+	const tankCapacity = 1000, bucketCapacity = 220, numTanks = 4, numBuckets = 6;
+	const totalCapacity = tankCapacity * numTanks + bucketCapacity * numBuckets;
 
-    runProductionPath(selected);
+	// e. 更新 Day 0 储存显示
+	updateDay0Storage();
+
+	// f. 生成生产安排
+	const dayResults = generateWeeklyProductionPlan(selected, day0Storage, deliveryWeights, totalCapacity);
+	renderWeeklyProductionPlan(dayResults)
+
+	// g. SVG 路径图（基于 flavour 顺序）
+	runProductionPath(selected);
   });
 
-  // ✅ 切换 Day 标签时显示对应天的 Tank/Bucket 状态（支持 Day 0 与 Day 1~7）
-	document.querySelectorAll(".day-label").forEach(label => {
+// ✅ 4. 切换 Day 标签时显示对应天的 Tank/Bucket 状态（支持 Day 0 与 Day 1~7）
+  document.querySelectorAll(".day-label").forEach(label => {
 	  label.addEventListener("click", () => {
 		document.querySelectorAll(".day-label").forEach(d => d.classList.remove("selected"));
 		label.classList.add("selected");
@@ -1083,8 +1027,9 @@
 		  });
 		}
 	  });
-	});
+  });
 	
+// ✅ 5. Day 0 储量状态显示逻辑
   function updateDay0Storage() {
 	const day0 = document.querySelector(`.day-content[data-day="0"]`);
 
@@ -1112,7 +1057,7 @@
 	});
   }
 
-
+// ✅ 6. 生产顺序路径生成与 SVG 可视化（核心亮点）
   function runProductionPath(selected) {
     const graph = buildGraph(selected);
     const path = greedyPath(graph, flavourInfo, selected);
@@ -1135,17 +1080,18 @@
     }
   }
 
-  function isSubset(a, b) {
+// ✅ 7. 图构建与路径计算方法
+  function isSubset(a, b) { // 判断 allergen 是否兼容
     return a.every(val => b.includes(val));
   }
 
-  function computeCost(fa, fb) {
+  function computeCost(fa, fb) { // 判断是否要清洗
     const allergenCompatible = isSubset(fa.allergens, fb.allergens);
     const colorOk = fb.color >= fa.color;
     return (allergenCompatible && colorOk) ? 0 : 100;
   }
 
-  function buildGraph(selected) {
+  function buildGraph(selected) { // 构建图
     const graph = {};
     selected.forEach(a => {
       const fa = flavourInfo[a.flavour] || { allergens: [], color: 99 };
@@ -1160,7 +1106,7 @@
     return graph;
   }
 
-  function greedyPath(graph, flavourInfo, selected) {
+  function greedyPath(graph, flavourInfo, selected) { // 基于清洗代价的贪婪路径
     const visited = new Set();
     const path = [];
     selected.sort((a, b) => {
@@ -1178,6 +1124,7 @@
     return path;
   }
 
+// ✅ 8. SVG 渲染逻辑
   function renderSVGPath(sorted, flavourInfo) {
     const spacing = 60, arrowSize = 10, fontSize = 12, margin = 20, lineHeight = 100;
     let svgContent = '', x = margin, y = margin;
@@ -1231,6 +1178,7 @@
     };
   }
 
+//✅ 9. 可选：每日渲染函数（复用）
   function renderDailyProduction(dayResult, container) {
     const ul = document.createElement("ul");
     ul.innerHTML = `<strong>${dayResult.day}</strong>`;
@@ -1245,6 +1193,125 @@
     container.appendChild(ul);
   }
 
+// ✅ 10. 每日安排计算
+  function generateWeeklyProductionPlan(selectedFlavourData, day0Storage, deliveryWeights, totalCapacity) {
+	  // 1. 整合每种口味的总需求量（不区分规格）
+	  const productionMap = {};
+	  selectedFlavourData.forEach(item => {
+		if (!productionMap[item.flavour]) productionMap[item.flavour] = 0;
+		productionMap[item.flavour] += item.amount;
+	  });
+
+	  // 2. 初始化生产计划（每种口味的剩余量）
+	  const productionPlan = Object.entries(productionMap).map(([flavour, total]) => ({
+		flavour,
+		remaining: total,
+	  }));
+
+	  // 3. 结果数组，用于存储每一天的生产结果
+	  const dayResults = [];
+
+	  // 初始储存（用于 Day 1 计算）
+	  let storageLeft = 0;
+
+	  // 4. 按 Day 1 ~ Day 7 循环安排生产
+	  for (let day = 1; day <= 7; day++) {
+		const outbound = deliveryWeights[day - 1]; // 当天出货量
+		const producedToday = [];
+
+		// ✅ 根据当前储存情况 + 出货量 计算最大允许生产量
+		let maxProducible;
+		if (day === 1) {
+		  maxProducible = Math.max(0, totalCapacity - day0Storage + outbound);
+		} else {
+		  maxProducible = Math.max(0, totalCapacity - storageLeft + outbound);
+		}
+
+		let dailyProductionTotal = 0;
+
+		// ✅ 循环遍历生产计划，分配每日生产任务
+		for (let i = 0; i < productionPlan.length; i++) {
+		  const item = productionPlan[i];
+		  if (item.remaining === 0) continue;
+
+		  const remainingCapacity = maxProducible - dailyProductionTotal;
+		  const producible = Math.min(item.remaining, remainingCapacity);
+
+		  if (producible > 0) {
+			producedToday.push({ flavour: item.flavour, amount: producible });
+			item.remaining -= producible;
+			dailyProductionTotal += producible;
+
+			if (dailyProductionTotal >= maxProducible) break;
+		  }
+		}
+
+		// ✅ 更新储存量（用于下一天）
+		if (day === 1) {
+		  storageLeft = Math.max(0, totalCapacity - day0Storage - dailyProductionTotal + outbound);
+		} else {
+		  storageLeft = Math.max(0, storageLeft + dailyProductionTotal - outbound);
+		}
+
+		// 记录当天结果
+		dayResults.push({
+		  day: `Day ${day}`,
+		  produced: producedToday,
+		  storage: storageLeft
+		});
+	  }
+
+	  // 返回结果
+	  return dayResults;
+
+  }
+  
+// ✅ 11. 渲染每一日的生产计划与模拟储存
+	function renderWeeklyProductionPlan(dayResults) {
+	  dayResults.forEach((dayResult, index) => {
+		const dayContainer = document.querySelector(`.day-content[data-day="${index + 1}"] .production-list`);
+		if (dayContainer) {
+		  dayContainer.innerHTML = "";
+		  dayResult.produced.forEach(p => {
+			const li = document.createElement("li");
+			li.textContent = `${p.flavour} – ${p.amount}kg`;
+			dayContainer.appendChild(li);
+		  });
+
+		  const storageLi = document.createElement("li");
+		  storageLi.textContent = `Storage Left: ${dayResult.storage}kg`;
+		  dayContainer.appendChild(storageLi);
+		}
+
+		// 模拟储存图（tank 和 bucket 填充）
+		updateDayStorage(index + 1, dayResult.storage);
+	  });
+	}
+  
+// ✅ 12. 更新simulation
+  function updateDayStorage(dayIndex, storageWeight) {
+	const day = document.querySelector(`.day-content[data-day="${dayIndex}"]`);
+	if (!day) return;
+
+	let remainingTank = storageWeight;
+	let remainingBucket = storageWeight;
+
+	// 先填 tank（最多6个，每个1000kg）
+	day.querySelectorAll(".tank").forEach(t => {
+	  const fill = Math.min(remainingTank, 1000);
+	  t.classList.toggle("filled", fill > 0);
+	  t.querySelector(".label").textContent = `${fill}kg`;
+	  remainingTank -= fill;
+	});
+
+	// 再填 bucket（最多4个，每个220kg）
+	day.querySelectorAll(".bucket").forEach(b => {
+	  const fill = Math.min(remainingBucket, 220);
+	  b.classList.toggle("filled", fill > 0);
+	  b.querySelector(".label").textContent = `${fill}kg`;
+	  remainingBucket -= fill;
+	});
+  }
 
 </script>
 
